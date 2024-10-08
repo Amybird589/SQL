@@ -55,3 +55,16 @@ VALUES
     ('Company II', 'Telecommunications', 110.5, 2000, 1, 21, 12, 4.9),
     ('Company JJ', 'Manufacturing', 370.0, 3100, 1, 20, 12, 7.6),
     ('Company KK', 'Healthcare', 150.2, 3400, 0, 16, 8, 5.3);
+
+
+
+--Take a look at the data--
+SELECT industry, ROUND(SUM(revenue),2) AS Total_Revenue, SUM(employees) AS Total_Employees
+FROM fortune_companies
+GROUP BY industry
+ORDER BY Total_Employees desc;
+
+SELECT industry, ROUND(SUM(revenue),2) AS Total_Revenue, SUM(employees) AS Total_Employees
+FROM fortune_companies
+GROUP BY industry
+ORDER BY Total_Revenue desc;
