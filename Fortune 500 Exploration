@@ -56,15 +56,42 @@ VALUES
     ('Company JJ', 'Manufacturing', 370.0, 3100, 1, 20, 12, 7.6),
     ('Company KK', 'Healthcare', 150.2, 3400, 0, 16, 8, 5.3);
 
+--Take a look at all of the data--
+SELECT *
+FROM fortune_companies;
 
-
---Take a look at the data--
-SELECT industry, ROUND(SUM(revenue),2) AS Total_Revenue, SUM(employees) AS Total_Employees
+--What industry has the most employees--
+SELECT industry, SUM(employees) AS Total_Employees
 FROM fortune_companies
 GROUP BY industry
-ORDER BY Total_Employees desc;
+ORDER BY Total_Employees desc
+LIMIT 1;
 
-SELECT industry, ROUND(SUM(revenue),2) AS Total_Revenue, SUM(employees) AS Total_Employees
+--What industry has the highest total revenue--
+SELECT industry, ROUND(SUM(revenue),2) AS Total_Revenue
 FROM fortune_companies
 GROUP BY industry
-ORDER BY Total_Revenue desc;
+ORDER BY Total_Revenue desc
+LIMIT 1;
+
+--What companies have less than 5000 employees and offer healthcare benefits--
+SELECT company_name, industry, employees, healthcare_benefits,
+CASE WHEN employees >= 100000 
+	 THEN "large"
+     WHEN employees >= 5000
+     THEN "Medium"
+     ELSE "Small"
+ END AS company_size
+FROM fortune_companies
+WHERE healthcare_benefits = 1
+AND company_size = "Small" 
+ORDER BY industry desc
+;
+
+--Which company has the highest average employee tenure, less than 3000 employees and at least 10 maternity_leave_weeks? --
+SELECT company_name, industry, revenue, employees, healthcare_benefits, paid_time_off_days, maternity_leave_weeks, MAX(avg_employee_tenure)
+FROM fortune_companies
+WHERE employees<=3000
+AND maternity_leave_weeks >10
+;
+
