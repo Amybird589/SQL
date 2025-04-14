@@ -56,25 +56,23 @@ VALUES
     ('Company JJ', 'Manufacturing', 370.0, 3100, 1, 20, 12, 7.6),
     ('Company KK', 'Healthcare', 150.2, 3400, 0, 16, 8, 5.3);
 
---Take a look at all of the data--
-SELECT *
-FROM fortune_companies;
-
---What industry has the most employees--
+--#1 What industry has the most employees--
 SELECT industry, SUM(employees) AS Total_Employees
 FROM fortune_companies
 GROUP BY industry
 ORDER BY Total_Employees desc
-LIMIT 1;
+LIMIT 1
+;
 
---What industry has the highest total revenue--
+--#2 What industry has the highest total revenue--
 SELECT industry, ROUND(SUM(revenue),2) AS Total_Revenue
 FROM fortune_companies
 GROUP BY industry
 ORDER BY Total_Revenue desc
-LIMIT 1;
+LIMIT 1
+;
 
---What companies have less than 5000 employees and offer healthcare benefits--
+--#3 What companies have less than 5000 employees and offer healthcare benefits--
 SELECT company_name, industry, employees, healthcare_benefits,
 CASE WHEN employees >= 100000 
 	 THEN "large"
@@ -88,10 +86,30 @@ AND company_size = "Small"
 ORDER BY industry desc
 ;
 
---Which company has the highest average employee tenure, less than 3000 employees and at least 10 maternity_leave_weeks? --
+--#4 Which company has the highest average employee tenure, less than 3000 employees and at least 10 maternity_leave_weeks? --
 SELECT company_name, industry, revenue, employees, healthcare_benefits, paid_time_off_days, maternity_leave_weeks, MAX(avg_employee_tenure)
 FROM fortune_companies
 WHERE employees<=3000
 AND maternity_leave_weeks >10
 ;
 
+--#5 Which company had the highest revenue and how much was it?
+SELECT company_name, revenue
+FROM fortune_companies
+WHERE revenue = (SELECT MAX(revenue) FROM fortune_companies)
+ORDER BY revenue desc;
+
+--#6 Which industry had the highest number of maternity leave weeks?
+SELECT industry, maternity_leave_weeks
+FROM fortune_companies
+WHERE maternity_leave_weeks = (SELECT MAX(maternity_leave_weeks) FROM fortune_companies)
+;
+
+--#7 What is the lowest average number of maternity leave weeks by Industry?
+SELECT industry, ROUND(AVG(maternity_leave_weeks)) AS average_number_of_maternity_leave_weeks
+FROM fortune_companies
+GROUP BY industry
+ORDER BY average_number_of_maternity_leave_weeks asc
+LIMIT 1
+ ;
+     
