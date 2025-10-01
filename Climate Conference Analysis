@@ -121,3 +121,57 @@ INSERT INTO hotels VALUES
  , (3, 'Four Season''s', '900 Winter Road, Cityville, PA')
  ;
 
+-- 1. [LEFT JOIN] List the first and last name of each vip attending an event along with the event name they are attending. This will help with making sure there is enough resources for each event.
+
+SELECT events.event_name
+, vips.first_name
+, vips.last_name
+FROM vips
+LEFT JOIN events
+ON vips.event = events.event_id
+WHERE events.event_name <>"Null"
+ORDER BY event_name
+;
+
+-- 2. [INNER JOIN]
+
+ 
+
+
+
+
+
+-- 3. [Multiples JOINs]
+
+
+
+
+
+
+
+
+-- 4. [subquery or SELF JOIN] Show each attendee name along with who they are giving feedback to during the event (panelist)
+
+SELECT attendee.first_name AS attendee_first_name
+, attendee.last_name AS attendee_last_name
+, panelist.first_name AS panelist_first_name
+, panelist.last_name AS panelist_last_name
+FROM vips AS attendee
+JOIN vips AS panelist
+ON attendee.member_id = panelist.provides_feedback_to
+;
+ 
+
+-- 5. Determine which vips are NOT attending any events so they can be contacted before and encouraged to sign up for one. Listing the association will help you focus on suggestions of which programs they may want to attend when looking at other vips from the same association and what events THEY are attending. 
+
+SELECT events.event_name
+, vips.association
+, vips.first_name
+, vips.last_name
+FROM vips
+LEFT JOIN events
+ON vips.event = events.event_id
+ORDER BY vips.association
+; 
+
+-- 6. [up to me!]
